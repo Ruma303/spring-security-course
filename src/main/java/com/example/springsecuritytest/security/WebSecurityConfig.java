@@ -21,6 +21,7 @@ public class WebSecurityConfig {
                         session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.GET, "/api/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/auth/**").permitAll() // Permette l'accesso a /auth
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form.disable())     // disabilita il form HTML
