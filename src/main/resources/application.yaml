@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: spring-security-test
+
+security:
+  jwt:
+    secret-key: this-is-a-secret-key
+    # Se abbiamo una variabile d'ambiente
+    # secret-key: ${JWT_SECRET_KEY}
