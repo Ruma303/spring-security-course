@@ -1,6 +1,19 @@
 spring:
   application:
     name: spring-security-test
+  datasource:
+    url: jdbc:mysql://localhost:3306/spring_security_jwt?serverTimezone=UTC
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password:
+
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate.format_sql: true
 
 security:
   jwt:

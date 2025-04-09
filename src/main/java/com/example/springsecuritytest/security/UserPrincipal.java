@@ -1,5 +1,6 @@
 package com.example.springsecuritytest.security;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
@@ -13,7 +14,11 @@ public class UserPrincipal implements UserDetails {
 
     private final Long id;
     private final String username;
+    private final String email;
+
+    @JsonIgnore
     private final String password;
+
     private final Collection<? extends GrantedAuthority> authorities;
 
     @Override
