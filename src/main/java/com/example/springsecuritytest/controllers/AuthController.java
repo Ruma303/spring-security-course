@@ -21,13 +21,15 @@ import java.util.List;
 public class AuthController {
 
     private final JwtIssuer jwtIssuer;
-
     private final AuthenticationManager authenticationManager;
 
     @PostMapping("/login")
     public LoginResponse login(@RequestBody @Validated LoginRequest loginRequest) {
         var authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword())
+                new UsernamePasswordAuthenticationToken(
+                        loginRequest.getUsername(),
+                        loginRequest.getPassword()
+                )
         );
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
