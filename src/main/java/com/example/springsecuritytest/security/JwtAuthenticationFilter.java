@@ -18,28 +18,32 @@ import java.util.Optional;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtDecoder jwtDecoder;
-
     private final JwtToPrincipalConverter jwtToPrincipalConverter;
+    private final JwtProperties jwtProperties;
 
     @Override
-    public void doFilterInternal(
-            HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-            throws ServletException, IOException
-    {
+    protected void doFilterInternal(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            FilterChain filterChain
+    ) throws ServletException, IOException {
+
         extractTokenFromRequest(request)
                 .map(jwtDecoder::decode)
                 .map(jwtToPrincipalConverter::convert)
                 .map(UserPrincipalAuthenticationToken::new)
-                .ifPresent(token -> {
-                    SecurityContextHolder.getContext().setAuthentication(token);
-                });
+                .ifPresent(auth -> SecurityContextHolder.getContext().setAuthentication(auth));
+
         filterChain.doFilter(request, response);
     }
 
     private Optional<String> extractTokenFromRequest(HttpServletRequest request) {
-        String token = request.getHeader("Authorization");
-        if (StringUtils.hasText(token) && token.startsWith("Bearer ")) {
-            return Optional.of(token.substring(7));
+        String headerName = jwtProperties.getToken().getHeader();
+        String prefix = jwtProperties.getToken().getPrefix();
+
+        String token = request.getHeader(headerName);
+        if (StringUtils.hasText(token) && token.startsWith(prefix)) {
+            return Optional.of(token.substring(prefix.length()));
         }
         return Optional.empty();
     }

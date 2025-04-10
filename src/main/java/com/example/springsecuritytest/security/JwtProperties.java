@@ -12,4 +12,14 @@ import org.springframework.context.annotation.Configuration;
 public class JwtProperties {
 
     private String secretKey;
+    private long expiration;
+
+    private TokenProperties token = new TokenProperties();
+
+    @Getter
+    @Setter
+    public static class TokenProperties {
+        private String header;
+        private String prefix;
+    }
 }
