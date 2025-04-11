@@ -3,6 +3,7 @@ package com.example.springsecuritytest.security;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -27,9 +28,17 @@ public class WebSecurityConfig {
                 .cors(cors -> cors.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
+                        // Endpoints pubblici
                         .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("/api/**").permitAll()
                         .requestMatchers("/public/**").permitAll()
+
+                        // Consenti solo i metodi GET su /api/**
+                        .requestMatchers(HttpMethod.GET, "/api/**").permitAll()
+
+                        // Tutti gli altri metodi su /api/** sono protetti
+                        .requestMatchers("/api/**").authenticated()
+
+                        // Tutti gli altri endpoint sono protetti
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form.disable())

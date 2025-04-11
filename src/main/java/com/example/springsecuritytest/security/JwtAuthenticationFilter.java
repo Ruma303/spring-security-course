@@ -27,7 +27,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             HttpServletResponse response,
             FilterChain filterChain
     ) throws ServletException, IOException {
+        String path = request.getServletPath();
 
+        // Ignora il filtro per endpoint pubblici
+        if (path.startsWith("/auth/") || path.startsWith("/public/")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        // Prova a estrarre e verificare il token
         extractTokenFromRequest(request)
                 .map(jwtDecoder::decode)
                 .map(jwtToPrincipalConverter::convert)
@@ -43,7 +51,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String token = request.getHeader(headerName);
 
         if (StringUtils.hasText(token) && token.startsWith(prefix)) {
-            return Optional.of(token.substring(prefix.length()));
+            return Optional.of(token.substring(prefix.length()).trim());
         }
         return Optional.empty();
     }
