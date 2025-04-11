@@ -1,9 +1,11 @@
 package com.example.springsecuritytest.controllers;
 
+import com.example.springsecuritytest.dtos.UserResponse;
 import com.example.springsecuritytest.entities.User;
 import com.example.springsecuritytest.security.UserPrincipal;
 import com.example.springsecuritytest.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,14 +25,17 @@ public class UserController {
 
     // Pubblica
     @GetMapping
-    public List<User> getUsers() {
-        return userService.findAllUsers();
+    public List<UserResponse> getAllUsers() {
+        return userService.findAllUsers().stream()
+                .map(UserResponse::fromEntity)
+                .toList();
     }
 
     // Pubblica
     @GetMapping("/{id}")
-    public User getUser(@PathVariable Long id) {
-        return userService.findUser(id);
+    public ResponseEntity<UserResponse> getUser(@PathVariable Long id) {
+        User user = userService.findUser(id);
+        return ResponseEntity.ok(UserResponse.fromEntity(user));
     }
     
     // Protetta
