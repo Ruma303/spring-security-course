@@ -40,8 +40,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private Optional<String> extractTokenFromRequest(HttpServletRequest request) {
         String headerName = jwtProperties.getToken().getHeader();
         String prefix = jwtProperties.getToken().getPrefix();
-
         String token = request.getHeader(headerName);
+
         if (StringUtils.hasText(token) && token.startsWith(prefix)) {
             return Optional.of(token.substring(prefix.length()));
         }

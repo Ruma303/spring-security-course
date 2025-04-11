@@ -12,9 +12,11 @@ public class JwtDecoder {
 
     private final JwtProperties jwtProperties;
 
+    /**
+     * Decodifica e verifica la firma del token JWT ricevuto
+     */
     public DecodedJWT decode(String token) {
-        return JWT // Non usare decoder() in quanto non verifica il JWT
-                .require(Algorithm.HMAC256(jwtProperties.getSecretKey()))
+        return JWT.require(Algorithm.HMAC256(jwtProperties.getSecretKey()))
                 .build()
                 .verify(token);
     }
