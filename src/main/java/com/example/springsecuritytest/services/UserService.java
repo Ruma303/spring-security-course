@@ -42,9 +42,14 @@ public class UserService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         existing.setUsername(user.getUsername());
-        existing.setPassword(user.getPassword());
         existing.setEmail(user.getEmail());
-        existing.setRole(user.getRole());
+
+        if (user.getPassword() != null && !user.getPassword().isBlank()) {
+            existing.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
+
+        // NON modificare il ruolo
+        // existing.setRole(...) → riga rimossa
 
         return userRepository.save(existing);
     }

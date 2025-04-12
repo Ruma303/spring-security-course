@@ -1,6 +1,8 @@
 package com.example.springsecuritytest.controllers;
 
+import com.example.springsecuritytest.dtos.UserCreateRequest;
 import com.example.springsecuritytest.dtos.UserResponse;
+import com.example.springsecuritytest.dtos.UserUpdateRequest;
 import com.example.springsecuritytest.entities.User;
 import com.example.springsecuritytest.security.UserPrincipal;
 import com.example.springsecuritytest.services.UserService;
@@ -37,17 +39,30 @@ public class UserController {
         User user = userService.findUser(id);
         return ResponseEntity.ok(UserResponse.fromEntity(user));
     }
-    
+
     // Protetta
     @PostMapping
-    public User createUser(@RequestBody User user) {
-        return userService.createUser(user);
+    public UserResponse createUser(@RequestBody UserCreateRequest request) {
+        User user = new User();
+        user.setUsername(request.getUsername());
+        user.setPassword(request.getPassword());
+        user.setEmail(request.getEmail());
+        user.setRole("USER");
+
+        User saved = userService.createUser(user);
+        return UserResponse.fromEntity(saved);
     }
 
     // Protetta
     @PutMapping("/{id}")
-    public User updateUser(@RequestBody User user, @PathVariable Long id) {
-        return userService.updateUser(user, id);
+    public UserResponse updateUser(@RequestBody UserUpdateRequest request, @PathVariable Long id) {
+        User user = new User();
+        user.setUsername(request.getUsername());
+        user.setEmail(request.getEmail());
+        user.setPassword(request.getPassword());
+
+        User saved =  userService.updateUser(user, id);
+        return UserResponse.fromEntity(saved);
     }
 
     // Protetta

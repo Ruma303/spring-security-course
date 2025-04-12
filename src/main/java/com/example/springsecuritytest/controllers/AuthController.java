@@ -6,6 +6,7 @@ import com.example.springsecuritytest.auth.RegisterRequest;
 import com.example.springsecuritytest.entities.User;
 import com.example.springsecuritytest.security.JwtIssuer;
 import com.example.springsecuritytest.security.UserPrincipal;
+import com.example.springsecuritytest.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,9 +26,7 @@ public class AuthController {
 
     private final JwtIssuer jwtIssuer;
     private final AuthenticationManager authenticationManager;
-
-    @Autowired
-    UserController userService;
+    private final UserService userService;
 
     @PostMapping("/login")
     public LoginResponse login(@RequestBody @Validated LoginRequest loginRequest) {
