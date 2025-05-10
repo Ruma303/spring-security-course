@@ -1,4 +1,4 @@
-package com.example.springsecuritytest.controllers;
+package com.example.springsecurity.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
