@@ -2,7 +2,7 @@ package com.example.springsecurity.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -16,6 +16,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfiguration {
 
     @Bean
@@ -30,20 +31,16 @@ public class SecurityConfiguration {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        // Creiamo un utente in memoria con nome utente "user1" e password "password1"
-        // {noop} indica che non viene utilizzata alcuna codifica della password
         UserDetails user = User.withUsername("user")
                 .password("{noop}pass")
                 .roles("USER")
                 .build();
 
-        // Creiamo un secondo utente in memoria con nome utente "admin" e password "admin"
         UserDetails admin = User.withUsername("admin")
                 .password("{noop}admin")
                 .roles("ADMIN")
                 .build();
 
-        // Il costruttore accetta una lista di utenti
         return new InMemoryUserDetailsManager(user, admin);
     }
 
