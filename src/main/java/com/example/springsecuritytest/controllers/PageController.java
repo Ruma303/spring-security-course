@@ -5,7 +5,12 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-public class HelloController {
+public class PageController {
+
+    @GetMapping
+    public String index() {
+        return "Benvenuto alla pagina principale! Hai superato il login!";
+    }
 
      @GetMapping("/hello")
      public String hello() {
