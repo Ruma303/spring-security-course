@@ -18,10 +18,15 @@ public class PageController {
         return "Hello, user!";
     }
 
+    @PreAuthorize("hasAnyRole('USER' , 'ADMIN')")
+    @GetMapping("/user")
+    public String allAuthenticated() {
+        return "Hai superato il login!";
+    }
+
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/admin")
     public String admin() {
         return "Benvenuto alla pagina admin! Hai superato il login!";
     }
-
 }
