@@ -4,14 +4,15 @@ spring:
 
   # Spring Security Configuration
   security:
-    user:
-      name: admin
-      password: admin123
+#    user:
+#      name: admin
+#      password: admin123
 
   # H2 Database Configuration
   h2:
     console:
       enabled: true
+      path: /h2-console
 
   datasource:
     url: jdbc:h2:mem:test
@@ -19,21 +20,9 @@ spring:
     username: sa
     password:
 
-  # MySQL Database Configuration
-#  datasource:
-#    url: jdbc:mysql://localhost:3306/spring_security?serverTimezone=UTC
-#    username: root
-#    password:
-#    driver-class-name: com.mysql.cj.jdbc.Driver
-#
-#  jpa:
-#    database-platform: org.hibernate.dialect.MySQL8Dialect
-#    hibernate:
-#      ddl-auto: update
-#    show-sql: true
-#    properties:
-#      hibernate:
-#        format_sql:
+  sql:
+    init:
+        mode: always
 
 server:
   port: 8080
