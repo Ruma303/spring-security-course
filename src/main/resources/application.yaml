@@ -1,6 +1,8 @@
 spring:
   application:
     name: spring-security
+    jwtSecret: YWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXo= # Base64-encoded 256-bit key
+    jwtExpirationMs: 86400000 # 1 day
 
   # Spring Security Configuration
   security:
@@ -18,6 +20,7 @@ spring:
     driver-class-name: org.h2.Driver
     username: sa
     password:
+
 
   # MySQL Database Configuration
 #  datasource:
