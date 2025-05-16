@@ -1,0 +1,7 @@
+{
+  "jwtToken": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyMiIsImlhdCI6MTc0NzQyNjIzOSwiZXhwIjoxNzQ3NTEyNjM5fQ.OAe-XquPSrSPNkEYs07a032cCBFTDyPUOpj3dCmfRuA",
+  "username": "user2",
+  "roles": [
+    "ROLE_USER"
+  ]
+}

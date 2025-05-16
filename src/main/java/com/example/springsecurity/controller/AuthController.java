@@ -1,4 +1,4 @@
-package com.example.springsecurity.controllers;
+package com.example.springsecurity.controller;
 
 import com.example.springsecurity.dto.RegisterUser;
 import com.example.springsecurity.dto.RegisterUserResponse;

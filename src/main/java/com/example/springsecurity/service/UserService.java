@@ -1,6 +1,8 @@
 package com.example.springsecurity.service;
 
 import com.example.springsecurity.dto.RegisterUser;
+import com.example.springsecurity.dto.UserRequest;
+import com.example.springsecurity.dto.UserResponse;
 import com.example.springsecurity.model.Role;
 import com.example.springsecurity.model.User;
 import com.example.springsecurity.repository.RoleRepository;
@@ -36,5 +38,35 @@ public class UserService {
         user.getRoles().add(userRole);
 
         userRepository.save(user);
+    }
+
+    public UserResponse getUserById(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Utente non trovato"));
+        return new UserResponse(user.getUsername(), user.getEmail());
+    }
+
+    public UserResponse getCurrentUser(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("Utente non trovato"));
+        return new UserResponse(user.getUsername(), user.getEmail());
+    }
+
+    public UserResponse updateUser(Long userId, UserRequest userRequest) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("Utente non trovato"));
+
+        user.setUsername(userRequest.username());
+        user.setEmail(userRequest.email());
+        user.setPassword(passwordEncoder.encode(userRequest.password()));
+
+        userRepository.save(user);
+        return new UserResponse(user.getUsername(), user.getEmail());
+    }
+
+    public void deleteUser(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("Utente non trovato"));
+        userRepository.delete(user);
     }
 }

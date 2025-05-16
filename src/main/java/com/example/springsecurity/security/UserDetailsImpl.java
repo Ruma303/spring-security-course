@@ -12,7 +12,7 @@ public record UserDetailsImpl(User user) implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return user.getRoles().stream()
-                .map(role -> (GrantedAuthority) () -> role.getName().name())
+                .map(role -> (GrantedAuthority) () -> "ROLE_" + role.getName().name())
                 .collect(Collectors.toSet());
     }
 
@@ -24,5 +24,34 @@ public record UserDetailsImpl(User user) implements UserDetails {
     @Override
     public String getUsername() {
         return user.getUsername();
+    }
+
+    public Long getId() {
+        return user.getId();
+    }
+
+    public String getEmail() {
+        return user.getEmail();
+    }
+
+    // I seguenti override sono superflui se usiamo un record
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }
