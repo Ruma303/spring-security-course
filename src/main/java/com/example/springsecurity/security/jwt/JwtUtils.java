@@ -1,9 +1,6 @@
-package com.example.springsecurity.security;
+package com.example.springsecurity.security.jwt;
 
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.UnsupportedJwtException;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
@@ -35,10 +32,8 @@ public class JwtUtils {
     }
 
     public String generateJwtToken(UserDetails userDetails) {
-        String username = userDetails.getUsername();
-
         return Jwts.builder()
-                .subject(username)
+                .subject(userDetails.getUsername())
                 .issuedAt(new Date())
                 .expiration(new Date((new Date()).getTime() + jwtExpirationMs))
                 .signWith(key())
@@ -55,15 +50,19 @@ public class JwtUtils {
     }
 
     public String getUsernameFromJwtToken(String token) {
+        return getAllClaimsFromJwtToken(token).getSubject();
+    }
+
+    public Claims getAllClaimsFromJwtToken(String token) {
         return Jwts.parser()
                 .verifyWith((SecretKey) key())
-                .build().parseSignedClaims(token)
-                .getPayload().getSubject();
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
     }
 
     public boolean validateJwtToken(String token) {
         try {
-            System.out.println("Validating JwtToken...");
             Jwts.parser()
                     .verifyWith((SecretKey) key())
                     .build().parseSignedClaims(token);
