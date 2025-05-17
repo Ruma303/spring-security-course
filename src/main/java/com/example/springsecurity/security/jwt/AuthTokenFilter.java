@@ -1,5 +1,6 @@
 package com.example.springsecurity.security.jwt;
 
+import com.example.springsecurity.security.CustomUserDetails;
 import com.example.springsecurity.security.UserDetailsServiceImpl;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
@@ -25,7 +26,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     private JwtUtils jwtUtils;
 
     @Autowired
-    private UserDetailsServiceImpl userDetailsService; // qui non
+    private UserDetailsServiceImpl userDetailsService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -36,6 +37,16 @@ public class AuthTokenFilter extends OncePerRequestFilter {
             if (jwt != null && jwtUtils.validateJwtToken(jwt)) {
                 String username = jwtUtils.getUsernameFromJwtToken(jwt);
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+
+                //? Esempio con CustomUserDetails
+//                CustomUserDetails userDetails = new CustomUserDetails(
+//                        userId,
+//                        username,
+//                        email,
+//                        password, // può anche essere null se non viene usata in fase di autenticazione
+//                        authorities
+//                );
+
                 UsernamePasswordAuthenticationToken authentication =
                         new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

@@ -18,15 +18,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import javax.sql.DataSource;
-
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final DataSource dataSource;
     private final AuthEntryPointJwt unauthorizedHandler;
 
     @Bean
@@ -61,23 +58,6 @@ public class SecurityConfig {
 
         return http.build();
     }
-
-    // Eventualmente, inizializzare il database con utenti di esempio
-//    @Bean
-//    public JdbcUserDetailsManager userDetailsService(DataSource dataSource) {
-//        JdbcUserDetailsManager manager = new JdbcUserDetailsManager(dataSource);
-//        if (!manager.userExists("user")) {
-//            manager.createUser(User.withUsername("user")
-//                    .password(passwordEncoder().encode("password"))
-//                    .roles("USER").build());
-//        }
-//        if (!manager.userExists("admin")) {
-//            manager.createUser(User.withUsername("admin")
-//                    .password(passwordEncoder().encode("admin"))
-//                    .roles("ADMIN").build());
-//        }
-//        return manager;
-//    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
